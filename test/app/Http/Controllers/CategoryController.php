@@ -38,19 +38,21 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        try {
-            DB::beginTransaction();
+        DB::beginTransaction();
 
-            $category = Category::firstOrCreate([
+        try {
+            $category = Category::create([
                 'title'  => $request->input('title'),
                 'slug'   => Str::slug($request->input('title'))
             ]);
-
-            DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
-            throw $e;
+
+            return redirect()->back()->with('error', $e->getMessage())
+                ->withInput();
         }
+
+        DB::commit();
 
         return redirect()->route('categories.index')
             ->with('success',

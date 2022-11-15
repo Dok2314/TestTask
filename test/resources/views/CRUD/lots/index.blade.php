@@ -3,11 +3,19 @@
 @section('title', 'Список лотов')
 
 @section('content')
-    <div class="mt-4 mb-4">
-        <a href="{{ route('lots.create') }}">
-            <button class="btn btn-primary">Создать</button>
-        </a>
+    <div class="container mt-4 mb-4">
+        <div class="row">
+            <div class="col-md-8">
+                @include('CRUD.lots.filter')
+            </div>
+            <div class="col-md-4">
+                <a href="{{ route('lots.create') }}">
+                    <button class="btn btn-primary">Создать</button>
+                </a>
+            </div>
+        </div>
     </div>
+
     <table class="table">
         <thead>
         <tr>
@@ -64,6 +72,6 @@
         </tbody>
     </table>
     <div class="mb-5">
-        {{ $lots->links('vendor.pagination.bootstrap-4') }}
+        {{ $lots->withQueryString()->links('vendor.pagination.bootstrap-4') }}
     </div>
 @endsection

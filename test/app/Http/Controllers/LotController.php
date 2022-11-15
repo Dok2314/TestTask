@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\LotFilter;
+use App\Http\Requests\LotRequest;
 use App\Models\Category;
 use App\Models\Lot;
 use Illuminate\Http\Request;
@@ -14,11 +16,12 @@ class LotController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(LotFilter $filter)
     {
-        $lots = Lot::withTrashed()->paginate(5);
+        $lots       = Lot::filter($filter)->paginate(5);
+        $categories = Category::all();
 
-        return view('CRUD.lots.index', compact('lots'));
+        return view('CRUD.lots.index', compact('lots', 'categories'));
     }
 
     /**
@@ -39,23 +42,23 @@ class LotController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(LotRequest $request)
     {
-        try {
-            DB::beginTransaction();
+        DB::beginTransaction();
 
+        try {
             $lot = Lot::firstOrCreate([
                 'title' => $request->input('title'),
                 'description' => $request->input('description'),
             ]);
 
             $lot->categories()->sync($request->categories);
-
-            DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
             throw $e;
         }
+
+        DB::commit();
 
         return redirect()->route('lots.index')
             ->with('success',
@@ -134,5 +137,12 @@ class LotController extends Controller
             ->restore();
 
         return redirect()->back()->with('success', 'Лот успешно востановлен!');
+    }
+
+    public function categoryFilter(Request $request)
+    {
+        $selectedCategories = $request->input('categories');
+
+
     }
 }

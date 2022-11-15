@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Обзор категории')
+@section('title', 'Обзор категории: ' . $category->title)
 
 @section('content')
     <div class="card offset-5 mt-5 mb-3" style="width: 18rem;">
