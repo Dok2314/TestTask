@@ -8,11 +8,13 @@
             <div class="col-md-8">
                 @include('CRUD.lots.filter')
             </div>
-            <div class="col-md-4">
-                <a href="{{ route('lots.create') }}">
-                    <button class="btn btn-primary">Создать</button>
-                </a>
-            </div>
+            @if($categories->isNotEmpty())
+                <div class="col-md-4">
+                    <a href="{{ route('lots.create') }}">
+                        <button class="btn btn-primary">Создать лот</button>
+                    </a>
+                </div>
+            @endif
         </div>
     </div>
 

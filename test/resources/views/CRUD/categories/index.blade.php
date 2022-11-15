@@ -5,7 +5,7 @@
 @section('content')
     <div class="mt-4 mb-4">
         <a href="{{ route('categories.create') }}">
-            <button class="btn btn-primary">Создать</button>
+            <button class="btn btn-primary">Создать категорию</button>
         </a>
     </div>
     <table class="table">

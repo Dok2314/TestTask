@@ -6,6 +6,16 @@ class LotFilter extends QueryFilter
 {
     public function categories($ids)
     {
-        return $this->builder->whereKey($ids);
+        $this->builder->whereHas(
+            'categories',
+            fn($q) => $q->whereKey($ids)
+        );
+    }
+
+    public function withTrashed($value)
+    {
+        if($value) {
+            $this->builder->withTrashed();
+        }
     }
 }

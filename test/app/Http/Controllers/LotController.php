@@ -33,6 +33,10 @@ class LotController extends Controller
     {
         $categories = Category::all();
 
+        if($categories->isEmpty()) {
+            return redirect()->route('categories.create');
+        }
+
         return view('CRUD.lots.create', compact('categories'));
     }
 
